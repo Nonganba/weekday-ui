@@ -1,6 +1,7 @@
-import { useCallback, useRef, useState } from 'react';
-import './App.css';
-import { useGetJobsQuery } from './slices/jobApiSlice';
+import { useCallback, useRef, useState } from "react";
+import "./App.css";
+import { useGetJobsQuery } from "./slices/jobApiSlice";
+import JobCard from "./components/JobCard";
 
 const App = () => {
   const [page, setPage] = useState(1);
@@ -28,7 +29,6 @@ const App = () => {
 
   return (
     <div className="App">
-
       {jobs.length <= 0 && !isFetching ? (
         <div ref={lastJobElementRef}>
           <h1>Oops...No jobs found !!</h1>
@@ -37,12 +37,12 @@ const App = () => {
         <div>
           {jobs.map((job, i) => {
             return (
-              <h2 ref={lastJobElementRef}>
-                {job.companyName}
-              </h2>
+              <div ref={lastJobElementRef}>
+                <JobCard job={job} />
+              </div>
             );
           })}
-          </div>
+        </div>
       )}
     </div>
   );
