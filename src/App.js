@@ -11,6 +11,32 @@ const App = () => {
   const jobs = data?.jdList ?? [];
   const observer = useRef();
 
+  const [filters, setFilters] = useState({
+    minExp: "",
+    companyName: "",
+    location: "",
+    jobRole: "",
+    techStack: "",
+    minJdSalary: "",
+  });
+
+  const handleFilterChange = (filterType, value) => {
+    setFilters({ ...filters, [filterType]: value });
+  };
+
+  const filteredJobs = jobs.filter((job) => {
+    return (
+      (filters.minExp === "" || job.minExp == filters.minExp) &&
+      (filters.companyName === "" ||
+        job.companyName.toLowerCase() === filters.companyName.toLowerCase()) &&
+      (filters.location === "" ||
+        job.location.toLowerCase() === filters.location.toLowerCase()) &&
+      (filters.minJdSalary === "" || job.minJdSalary == filters.minJdSalary) &&
+      (filters.jobRole === "" ||
+        job.jobRole.toLowerCase() === filters.jobRole.toLowerCase())
+    );
+  });
+
   // Infinite scrolling using Intersection Observer
   const lastJobElementRef = useCallback(
     (node) => {
@@ -44,12 +70,36 @@ const App = () => {
           paddingBottom: "15px",
         }}
       >
-        <Filter filterName="Roles" />
-        <Filter filterName="Number of Employees" />
-        <Filter filterName="Experience" />
-        <Filter filterName="Remote" />
-        <Filter filterName="Minimum Base Pay Salary" />
-        <Filter filterName="Search Company Name" />
+        <Filter
+          filterName="Roles"
+          filterType="jobRole"
+          handleFilterChange={handleFilterChange}
+        />
+        <Filter
+          filterName="Number of Employees"
+          handleFilterChange={handleFilterChange}
+        />
+        <Filter
+          filterName="Experience"
+          filterType="minExp"
+          handleFilterChange={handleFilterChange}
+        />
+        <Filter
+          filterName="Remote"
+          filterType="location"
+          handleFilterChange={handleFilterChange}
+        />
+        <Filter
+          filterName="Minimum Base Pay Salary"
+          filterType="minJdSalary"
+          handleFilterChange={handleFilterChange}
+        />
+        <Filter
+          filterName="Search Company Name"
+          filterType="companyName"
+          inputType="text"
+          handleFilterChange={handleFilterChange}
+        />
       </Stack>
       {jobs.length <= 0 && !isFetching ? (
         <div ref={lastJobElementRef}>
@@ -57,7 +107,7 @@ const App = () => {
         </div>
       ) : (
         <div>
-          {jobs.map((job, i) => {
+          {filteredJobs.map((job, i) => {
             return (
               <div ref={lastJobElementRef}>
                 <JobCard job={job} />
