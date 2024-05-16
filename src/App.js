@@ -1,16 +1,12 @@
-import { useCallback, useRef, useState } from "react";
-import "./App.css";
 import { useGetJobsQuery } from "./slices/jobApiSlice";
+import { Grid, Stack } from "@mui/material";
+import React, { useRef, useState, useCallback } from "react";
 import JobCard from "./components/JobCard";
-import { Stack } from "@mui/material";
 import Filter from "./components/Filter";
+import "./App.css";
 
 const App = () => {
   const [page, setPage] = useState(1);
-  const { data, isFetching } = useGetJobsQuery(page);
-  const jobs = data?.jdList ?? [];
-  const observer = useRef();
-
   const [filters, setFilters] = useState({
     minExp: "",
     companyName: "",
@@ -20,10 +16,14 @@ const App = () => {
     minJdSalary: "",
   });
 
+  const { data, isFetching } = useGetJobsQuery(page);
+  const jobs = data?.jdList ?? [];
+
   const handleFilterChange = (filterType, value) => {
     setFilters({ ...filters, [filterType]: value });
   };
 
+  // Filter functionality
   const filteredJobs = jobs.filter((job) => {
     return (
       (filters.minExp === "" || job.minExp == filters.minExp) &&
@@ -38,6 +38,7 @@ const App = () => {
   });
 
   // Infinite scrolling using Intersection Observer
+  const observer = useRef();
   const lastJobElementRef = useCallback(
     (node) => {
       if (isFetching) return;
@@ -97,24 +98,28 @@ const App = () => {
         <Filter
           filterName="Search Company Name"
           filterType="companyName"
-          inputType="text"
           handleFilterChange={handleFilterChange}
         />
       </Stack>
-      {jobs.length <= 0 && !isFetching ? (
+
+      {filteredJobs.length <= 0 && !isFetching ? (
         <div ref={lastJobElementRef}>
           <h1>Oops...No jobs found !!</h1>
         </div>
       ) : (
-        <div>
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          sx={{ justifyContent: "center" }}
+        >
           {filteredJobs.map((job, i) => {
             return (
-              <div ref={lastJobElementRef}>
+              <Grid item ref={lastJobElementRef}>
                 <JobCard job={job} />
-              </div>
+              </Grid>
             );
           })}
-        </div>
+        </Grid>
       )}
     </div>
   );

@@ -1,9 +1,17 @@
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+
+import { useState } from "react";
 import { Box, Button, Chip, Container } from "@mui/material";
 
 export default function JobCard({ job }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
     <Card
       variant="outlined"
@@ -37,17 +45,29 @@ export default function JobCard({ job }) {
             <Typography variant="body2" color="text.secondary">
               {job.companyName}
             </Typography>
-            <Typography variant="body1" color="text.primary" sx={{ fontSize: '17px'}}>
+            <Typography
+              variant="body1"
+              color="text.primary"
+              sx={{ fontSize: "17px" }}
+            >
               {job.jobRole.charAt(0).toUpperCase() + job.jobRole.slice(1)}
             </Typography>
-            <Typography variant="body5" color="text.primary" sx={{ fontWeight: '600', fontSize: '14px'}}>
+            <Typography
+              variant="body5"
+              color="text.primary"
+              sx={{ fontWeight: "600", fontSize: "14px" }}
+            >
               {job.location.charAt(0).toUpperCase() + job.location.slice(1)}
             </Typography>
           </Box>
         </Box>
 
         <Box>
-          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: '600'}}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontWeight: "600" }}
+          >
             Estimated Salary: &#36;{job.minJdSalary}
             {job.minJdSalary && job.maxJdSalary && " - "}
             {job.maxJdSalary} {job.salaryCurrencyCode}✅
@@ -60,6 +80,11 @@ export default function JobCard({ job }) {
           display: "flex",
           flexDirection: "column",
           gap: "2px",
+          height: expanded ? "100%" : "200px",
+          background: expanded ? "none" : "-webkit-linear-gradient(#000, #fff)",
+          WebkitBackgroundClip: expanded ? "none" : "text",
+          WebkitTextFillColor: expanded ? "none" : "transparent",
+          overflow: expanded ? "" : "hidden",
           marginTop: "10px",
         }}
       >
@@ -72,13 +97,12 @@ export default function JobCard({ job }) {
         <Typography variant="body2" sx={{ fontWeight: "700" }}>
           About Us :
         </Typography>
-        <Typography variant="body2">
-          {job.jobDetailsFromCompany}
-        </Typography>
+        <Typography variant="body2">{job.jobDetailsFromCompany}</Typography>
       </Box>
 
       <Box
         sx={{
+          marginTop: expanded ? "0px" : "-40px",
           display: "flex",
           flexDirection: "column",
         }}
@@ -92,9 +116,12 @@ export default function JobCard({ job }) {
           }}
         >
           <Button
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
             style={{ textTransform: "none" }}
           >
-            View more
+            View {expanded ? "less" : "more"}
           </Button>
         </Container>
 
@@ -108,9 +135,7 @@ export default function JobCard({ job }) {
           <Typography variant="body2" color="text.secondary">
             Minimum Experience
           </Typography>
-          <Typography variant="body2">
-            {job.minExp ?? 0} years
-          </Typography>
+          <Typography variant="body2">{job.minExp ?? 0} years</Typography>
         </Box>
 
         <Box

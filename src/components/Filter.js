@@ -3,7 +3,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import React from "react";
 
-const Filter = ({ filterName, handleFilterChange, filterType, inputType }) => {
+const Filter = ({ filterName, handleFilterChange, filterType }) => {
   return (
     <Paper
       component="form"
