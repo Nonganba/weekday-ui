@@ -23,10 +23,14 @@ const Filter = ({ filterName, handleFilterChange, filterType }) => {
         inputProps={{ "aria-label": filterName }}
         onChange={(event) => handleFilterChange(filterType, event.target.value)}
       />
-      <Divider sx={{ height: 28 }} orientation="vertical" />
-      <IconButton color="disabled" sx={{ p: "5px" }} aria-label="directions">
-        <ExpandMoreIcon />
-      </IconButton>
+      {filterType !== "companyName" && (
+        <Divider sx={{ height: 28 }} orientation="vertical" />
+      )}
+      {filterType !== "companyName" && (
+        <IconButton color="disabled" sx={{ p: "5px" }} aria-label="directions">
+          <ExpandMoreIcon />
+        </IconButton>
+      )}
     </Paper>
   );
 };
