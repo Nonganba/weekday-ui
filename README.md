@@ -15,4 +15,5 @@ This project is a React-based job search and filter application. It allows users
 1. Clone the repo
 2. Run 'npm install'
 3. Run 'npm start'
-
+4. The application will be available at http://localhost:3000
+5. To create production build run 'npm run build'
