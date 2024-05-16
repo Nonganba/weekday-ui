@@ -7,6 +7,11 @@ This project is a React-based job search and filter application. It allows users
 - Job Filters: Filter job listings by job title, company, location, job type, and more.
 - Responsive Design: Fully responsive and works on all devices.
 
+  ## Tech Stack
+  1. ReactJS
+  2. Redux Toolkit
+  3. MaterialUI
+
 ## Prerequisites
 - Node.js (version 12 or higher)
 - npm or yarn
